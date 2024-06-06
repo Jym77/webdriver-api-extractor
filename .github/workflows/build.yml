@@ -14,18 +14,14 @@ concurrency:
 jobs:
   build:
     name: Build
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-2019]
-        node: [18, 20]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 20
           cache:
             yarn
       - run: yarn install --immutable
-      - run: yarn build --quiet
+      - run: yarn tsc -build
       - run: yarn api-extractor run
